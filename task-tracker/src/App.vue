@@ -23,11 +23,12 @@
               />
               <label for="priority" class="add-card__form__element add-card__form__element__label">Важность</label>
               <select id="priority" class="add-card__form__element" v-model="card_priority">
-                <option value="0">Низший приоритет</option>
-                <option value="1">Средний приоритет</option>
-                <option value="2">Высший приоритет</option>
+                <option selected value="0">Не выбрано</option>
+                <option value="1">Низший приоритет</option>
+                <option value="2">Средний приоритет</option>
+                <option value="3">Высший приоритет</option>
               </select>
-              <button role="button" class="add-card__form__element just-button" type='button' @click="addCard">Добавить</button>
+              <button role="button" class="add-card__form__element just-button" :class="{'shake animated': animated, 'just-button_disabled': isButtonDisabled}" @animationend="animated = false" type='button' @click="addCard">Добавить</button>
             </form>
           </template>
         </vue-modaltor>
@@ -58,8 +59,9 @@ export default {
     return {
       open: false,
       description_input: "",
-      card_priority: 0,
+      card_priority: "0",
       blackTheme: false,
+      animated: false,
     };
   },
   methods:{
@@ -70,7 +72,20 @@ export default {
       this.open = false;
     },
     addCard(){
-
+      if (this.isButtonDisabled){
+        this.animate();
+      }
+      else{
+        let object = {
+          description: this.description_input,
+          priority: this.card_priority
+        };
+        this.$store.commit('addCard', object)
+        this.hideModal();
+      }
+    },
+    animate() {
+      this.animated = true;
     }
   },
   computed: {
@@ -81,7 +96,7 @@ export default {
       return this.$store.state.currentCardID;
     },
     isButtonDisabled(){
-      return this.description_input !== "";
+      return (this.description_input === "" || this.card_priority === "0");
     }
   }
 }
@@ -105,7 +120,76 @@ export default {
 .add-card__form__element{
   width: 50%;
 }
-.just-button{
+.just-button_disabled{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
 
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.animated.hinge {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+.animated.bounceIn,
+.animated.bounceOut {
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
+}
+
+.animated.flipOutX,
+.animated.flipOutY {
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
+}
+
+@-webkit-keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+@keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shake {
+  -webkit-animation-name: shake;
+  animation-name: shake;
 }
 </style>

@@ -9,9 +9,11 @@ export default new Vuex.Store({
     currentCardID: null
   },
   mutations: {
+    addCard(state, card){
+      state.cards.push(card);
+    },
+    defineCurrentCard(state, ID){
+      state.currentCardID = ID;
+    }
   },
-  actions: {
-  },
-  modules: {
-  }
 })
