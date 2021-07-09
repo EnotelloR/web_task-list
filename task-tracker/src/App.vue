@@ -9,7 +9,7 @@
         <label for="theme-changer" class="theme-changer__indicator" v-else>Включить темную тему</label>
       </form>
     </header>
-    <main>
+    <main class="content">
       <div>
         <button role="button" @click="openForm">Добавить карточку</button>
         <vue-modaltor :visible="open" @hideModal="hideModal" class="add-card">
@@ -60,7 +60,6 @@ export default {
   },
   data() {
     return {
-      card_id: 0,
       open: false,
       description_input: "",
       card_priority: "0",
@@ -82,9 +81,7 @@ export default {
         this.animate();
       }
       else{
-        this.card_id++;
         let object = {
-          ID: this.card_id,
           description: this.description_input,
           priority: this.card_priority
         };
@@ -111,6 +108,60 @@ export default {
 </script>
 
 <style>
+body{
+  margin: 0;
+}
+*{
+  font-family: Verdana;
+  line-height: 1.5;
+  font-size: 1.05em;
+  outline-color: #51b8c6;
+}
+
+.cards-holder{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 300px);
+  gap: 2%;
+  grid-row-end: auto;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+}
+
+.blackBody, lightBody{
+  margin: 0;
+  height: 100vh;
+}
+.blackBody{
+  background-color: black;
+}
+.blackBody *{
+  background-color: black;
+  color: whitesmoke;
+}
+.lightBody *{
+  background-color: white;
+  color: black;
+}
+.header{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.footer{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .modaltor__overlay{
   background-color: inherit !important;
 }
@@ -204,5 +255,13 @@ export default {
 .shake {
   -webkit-animation-name: shake;
   animation-name: shake;
+}
+@media (max-width: 450px) {
+  .header{
+    padding-top: 5%;
+    margin-bottom: 5%;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 </style>
