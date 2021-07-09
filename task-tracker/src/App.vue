@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="[{ blackBody: blackTheme }, { lightBody: !blackTheme }]" id="app">
     <header class="header">
-      <img class="header__element" src="" alt="логотип">
+      <img class="header__element" src="./assets/logo.png" srcset="./assets/logo.png 1x" alt="логотип">
       <p class="header__element">Task-Tracker - Smirnov</p>
       <form class="theme-changer header__element">
         <input id="theme-changer" class="theme-changer__check" type="checkbox" v-model="blackTheme">
@@ -13,6 +13,9 @@
       <div>
         <button role="button" @click="openForm">Добавить карточку</button>
         <vue-modaltor :visible="open" @hideModal="hideModal" class="add-card">
+          <template #header>
+            <form class="card__form"><button role="button" class="card__form__button" type="button" @click="hideModal">Закрыть</button></form>
+          </template>
           <template #body>
             <form v-if="open" class="add-card__form">
               <label for="description" class="add-card__form__element card__form__element__label" >Описание</label>
@@ -57,6 +60,7 @@ export default {
   },
   data() {
     return {
+      card_id: 0,
       open: false,
       description_input: "",
       card_priority: "0",
@@ -69,6 +73,8 @@ export default {
       this.open = true;
     },
     hideModal() {
+      this.description_input = "";
+      this.card_priority = "0";
       this.open = false;
     },
     addCard(){
@@ -76,7 +82,9 @@ export default {
         this.animate();
       }
       else{
+        this.card_id++;
         let object = {
+          ID: this.card_id,
           description: this.description_input,
           priority: this.card_priority
         };
@@ -90,7 +98,7 @@ export default {
   },
   computed: {
     cards(){
-      return this.$store.state.cards;
+      return this.$store.state.cards.slice().reverse();
     },
     currentCardID(){
       return this.$store.state.currentCardID;
@@ -98,7 +106,7 @@ export default {
     isButtonDisabled(){
       return (this.description_input === "" || this.card_priority === "0");
     }
-  }
+  },
 }
 </script>
 
@@ -120,6 +128,11 @@ export default {
 .add-card__form__element{
   width: 50%;
 }
+
+.card__form{
+  text-align: center;
+}
+
 .just-button_disabled{
   border: 1px solid #999999;
   background-color: #cccccc;

@@ -14,6 +14,10 @@ export default new Vuex.Store({
     },
     defineCurrentCard(state, ID){
       state.currentCardID = ID;
+    },
+    deleteCard(state, card){
+      let index = state.cards.indexOf(card);
+      state.cards.splice(index, 1);
     }
   },
 })
