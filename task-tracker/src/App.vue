@@ -11,7 +11,7 @@
     </header>
     <main class="content">
       <div>
-        <form class="card__form"><button aria-label="Добавить" role="button" @click="openForm">Добавить карточку</button></form>
+        <form class="card__form"><button aria-label="Добавить" role="button" type="button" @click="openForm">Добавить карточку</button></form>
         <vue-modaltor :visible="open" @hideModal="hideModal" class="add-card">
           <template #header>
             <form class="card__form"><button aria-label="Закрыть" role="button" class="card__form__button" type="button" @click="hideModal">Закрыть</button></form>
