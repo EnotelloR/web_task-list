@@ -11,39 +11,23 @@
     </header>
     <main>
       <div>
-        <button role="button">Добавить карточку</button>
-        <vue-modaltor :visible="open" @hideModal="hideModal" class="card-all-data" drag>
-          <template #body class="card-all-data__body">
-            <form v-if="open" class="card-all-data__form">
-              <div class="card-all-data__form__input-title">Описание</div>
+        <button role="button" @click="openForm">Добавить карточку</button>
+        <vue-modaltor :visible="open" @hideModal="hideModal" class="add-card">
+          <template #body>
+            <form v-if="open" class="add-card__form">
+              <label for="description" class="add-card__form__element card__form__element__label" >Описание</label>
               <input
-                  class="card-all-data__form__input-field"
+                  id="description"
+                  class="add-card__form__element"
                   v-model="description_input"
               />
-              <div class="card-all-data__form__input-title">Статус</div>
-              <select class="card-all-data__form__input-field" v-model="status_input">
-                <option value="0">План</option>
-                <option value="1">В работе</option>
-                <option value="2">Готово</option>
+              <label for="priority" class="add-card__form__element add-card__form__element__label">Важность</label>
+              <select id="priority" class="add-card__form__element" v-model="card_priority">
+                <option value="0">Низший приоритет</option>
+                <option value="1">Средний приоритет</option>
+                <option value="2">Высший приоритет</option>
               </select>
-              <div class="card-all-data__form__input-title">Ответственный</div>
-              <input
-                  class="card-all-data__form__input-field"
-                  v-model="reliable_input"
-              />
-              <div class="card-all-data__form__input-title">Дата и время начала</div>
-              <input
-                  class="card-all-data__form__input-field"
-                  type="datetime-local"
-                  v-model="start_date_input"
-              />
-              <div class="card-all-data__form__input-title">Дата и время завершения</div>
-              <input
-                  class="card-all-data__form__input-field"
-                  type="datetime-local"
-                  v-model="end_date_input"
-              />
-              <button class="just-button" type='button' @click="saveChanges">Сохранить</button>
+              <button role="button" class="add-card__form__element just-button" type='button' @click="addCard">Добавить</button>
             </form>
           </template>
         </vue-modaltor>
@@ -59,7 +43,6 @@
     <footer class="footer">
       <p class="footer_element">Смирнов Егор Игоревич. 191-361. 09.07.21</p>
     </footer>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -71,24 +54,58 @@ export default {
   components: {
     Card,
   },
+  data() {
+    return {
+      open: false,
+      description_input: "",
+      card_priority: 0,
+      blackTheme: false,
+    };
+  },
+  methods:{
+    openForm(){
+      this.open = true;
+    },
+    hideModal() {
+      this.open = false;
+    },
+    addCard(){
+
+    }
+  },
   computed: {
     cards(){
       return this.$store.state.cards;
     },
     currentCardID(){
       return this.$store.state.currentCardID;
+    },
+    isButtonDisabled(){
+      return this.description_input !== "";
     }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.modaltor__overlay{
+  background-color: inherit !important;
+}
+.modaltor__panel{
+  background-color: deepskyblue !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 10px !important;
+}
+.add-card__form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+}
+.add-card__form__element{
+  width: 50%;
+}
+.just-button{
+
 }
 </style>
