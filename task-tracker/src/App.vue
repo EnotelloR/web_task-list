@@ -11,10 +11,10 @@
     </header>
     <main class="content">
       <div>
-        <button role="button" @click="openForm">Добавить карточку</button>
+        <form class="card__form"><button aria-label="Добавить" role="button" @click="openForm">Добавить карточку</button></form>
         <vue-modaltor :visible="open" @hideModal="hideModal" class="add-card">
           <template #header>
-            <form class="card__form"><button role="button" class="card__form__button" type="button" @click="hideModal">Закрыть</button></form>
+            <form class="card__form"><button aria-label="Закрыть" role="button" class="card__form__button" type="button" @click="hideModal">Закрыть</button></form>
           </template>
           <template #body>
             <form v-if="open" class="add-card__form">
@@ -31,7 +31,7 @@
                 <option value="2">Средний приоритет</option>
                 <option value="3">Высший приоритет</option>
               </select>
-              <button role="button" class="add-card__form__element just-button" :class="{'shake animated': animated, 'just-button_disabled': isButtonDisabled}" @animationend="animated = false" type='button' @click="addCard">Добавить</button>
+              <button aria-label="Добавить" role="button" class="add-card__form__element just-button" :class="{'shake animated': animated, 'just-button_disabled': isButtonDisabled}" @animationend="animated = false" type='button' @click="addCard">Добавить</button>
             </form>
           </template>
         </vue-modaltor>
@@ -153,6 +153,7 @@ body{
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  text-align: center;
 }
 
 .content{
